@@ -1,13 +1,9 @@
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
-const {URL} = require('url')
+const url = require('url')
 const typo = require("typo-js");
 const dict = new typo("en_US")
 
-function absolute(base, relative) {
-  const url = new URL(relative, base)
-  return url.href
-}
 
 module.exports.checkPage = (event, context, callback) => {
   fetch(event.queryStringParameters && event.queryStringParameters.url)
@@ -18,7 +14,7 @@ module.exports.checkPage = (event, context, callback) => {
     .then(text => text.match(/[^\W\d](\w|[-']{1,2}(?=\w))*/g))
     .then(words => words.filter(word => !dict.check(word))),
     Promise.resolve($('a').get().map(a => $(a).attr('href')))
-    .then(links => links.map(link => absolute(event.queryStringParameters.url, link)))
+    .then(links => links.map(link => url.resolve(event.queryStringParameters.url, link)))
   ]))
   .then(values => {
     const response = {
