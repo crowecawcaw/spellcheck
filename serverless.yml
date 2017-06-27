@@ -1,0 +1,28 @@
+# Welcome to serverless. Read the docs
+# https://serverless.com/framework/docs/
+
+# Serverless.yml is the configuration the CLI
+# uses to deploy your code to your provider of choice
+
+# The `service` block is the name of the service
+service: serverless-hello-world
+
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs6.10
+  memorySize: 128
+
+# The `functions` block defines what code to deploy
+functions:
+  helloWorld:
+    handler: handler.checkPage
+    # The `events` block defines how to trigger the handler.helloWorld code
+    events:
+      - http:
+          path: checkPage
+          method: get
+          cors: true
+
+plugins:
+  - serverless-offline
