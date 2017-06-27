@@ -11,7 +11,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.1",
     "node-fetch": "^1.7.1",
-    "nodehun": "^2.0.11"
+    "typo-js": "^1.0.3"
   },
   "devDependencies": {
     "serverless-offline": "^3.14.2"

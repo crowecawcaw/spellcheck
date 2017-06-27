@@ -1,27 +1,12 @@
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
-const nodehun = require('nodehun')
-const fs = require('fs')
-
-const dict = new nodehun(
-  fs.readFileSync(__dirname+'/node_modules/nodehun/examples/dictionaries/en_US.aff'),
-  fs.readFileSync(__dirname+'/node_modules/nodehun/examples/dictionaries/en_US.dic')
-)
+const {URL} = require('url')
+const typo = require("typo-js");
+const dict = new typo("en_US")
 
 function absolute(base, relative) {
-    var stack = base.split("/"),
-        parts = relative.split("/");
-    stack.pop(); // remove current file name (or empty string)
-                 // (omit if "base" is the current folder without trailing slash)
-    for (var i=0; i<parts.length; i++) {
-        if (parts[i] == ".")
-            continue;
-        if (parts[i] == "..")
-            stack.pop();
-        else
-            stack.push(parts[i]);
-    }
-    return stack.join("/");
+  const url = new URL(relative, base)
+  return url.href
 }
 
 module.exports.checkPage = (event, context, callback) => {
@@ -31,7 +16,7 @@ module.exports.checkPage = (event, context, callback) => {
   .then($ => Promise.all([
     Promise.resolve($('body').text())
     .then(text => text.match(/[^\W\d](\w|[-']{1,2}(?=\w))*/g))
-    .then(words => words.filter(word => !dict.isCorrectSync(word))),
+    .then(words => words.filter(word => !dict.check(word))),
     Promise.resolve($('a').get().map(a => $(a).attr('href')))
     .then(links => links.map(link => absolute(event.queryStringParameters.url, link)))
   ]))

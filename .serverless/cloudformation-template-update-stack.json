@@ -8,7 +8,7 @@
     "HelloWorldLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/serverless-hello-world-dev-helloWorld"
+        "LogGroupName": "/aws/lambda/serverless-spellcheck-dev-helloWorld"
       }
     },
     "IamRoleLambdaExecution": {
@@ -37,7 +37,7 @@
                 "-",
                 [
                   "dev",
-                  "serverless-hello-world",
+                  "serverless-spellcheck",
                   "lambda"
                 ]
               ]
@@ -52,7 +52,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-hello-world-dev-helloWorld:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-spellcheck-dev-helloWorld:*"
                     }
                   ]
                 },
@@ -63,7 +63,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-hello-world-dev-helloWorld:*:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-spellcheck-dev-helloWorld:*:*"
                     }
                   ]
                 }
@@ -76,7 +76,7 @@
           "Fn::Join": [
             "-",
             [
-              "serverless-hello-world",
+              "serverless-spellcheck",
               "dev",
               "us-east-1",
               "lambdaRole"
@@ -92,11 +92,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/serverless-hello-world/dev/1498549529688-2017-06-27T07:45:29.688Z/serverless-hello-world.zip"
+          "S3Key": "serverless/serverless-spellcheck/dev/1498556133723-2017-06-27T09:35:33.723Z/serverless-spellcheck.zip"
         },
-        "FunctionName": "serverless-hello-world-dev-helloWorld",
-        "Handler": "handler.helloWorld",
-        "MemorySize": 1024,
+        "FunctionName": "serverless-spellcheck-dev-helloWorld",
+        "Handler": "handler.checkPage",
+        "MemorySize": 256,
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -111,23 +111,23 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "HelloWorldLambdaVersionvahC6A3yebJ4SQINRvXfyuJ7MqhTcKqQjDyt2HAv3tc": {
+    "HelloWorldLambdaVersiongCpFmByuqxv0UTsnebczJevxODrPmmU1n8pRxzjg2I": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HelloWorldLambdaFunction"
         },
-        "CodeSha256": "vahC6A3yebJ4SQINRvXfyuJ7MqhTcKqQjDyt2HAv3tc="
+        "CodeSha256": "+gCpFmByuqxv0UTsnebczJevxODrPmmU1n8pRxzjg2I="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-serverless-hello-world"
+        "Name": "dev-serverless-spellcheck"
       }
     },
-    "ApiGatewayResourceHelloDashworld": {
+    "ApiGatewayResourceCheckpage": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -136,13 +136,13 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "hello-world",
+        "PathPart": "checkPage",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodHelloDashworldOptions": {
+    "ApiGatewayMethodCheckpageOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -181,20 +181,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceHelloDashworld"
+          "Ref": "ApiGatewayResourceCheckpage"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodHelloDashworldGet": {
+    "ApiGatewayMethodCheckpageGet": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "GET",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceHelloDashworld"
+          "Ref": "ApiGatewayResourceCheckpage"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -226,7 +226,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1498549529707": {
+    "ApiGatewayDeployment1498556133743": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -235,7 +235,7 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodHelloDashworldGet"
+        "ApiGatewayMethodCheckpageGet"
       ]
     },
     "HelloWorldLambdaPermissionApiGateway": {
@@ -281,7 +281,7 @@
     "HelloWorldLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloWorldLambdaVersionvahC6A3yebJ4SQINRvXfyuJ7MqhTcKqQjDyt2HAv3tc"
+        "Ref": "HelloWorldLambdaVersiongCpFmByuqxv0UTsnebczJevxODrPmmU1n8pRxzjg2I"
       }
     },
     "ServiceEndpoint": {
